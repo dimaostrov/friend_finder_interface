@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import axios from 'axios';
+
+import Modal from './Modal';
 
 const INITIAL_STATE = {
   name: '',
@@ -22,13 +25,45 @@ const byPropKey = (propertyName, value) => () => ({
 class Form extends Component {
   constructor(){
     super()
-    this.state = { ...INITIAL_STATE };
+    this.state = { completed: false, modal: false, friend: '', input: [...INITIAL_STATE] };
 
+    this.handleClick = this.handleClick.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
-  render () {
-    const { name, photo, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10 } = this.state;
+  componentDidMount(){
+    this.setState({ input: [...INITIAL_STATE]});
+  }
 
+  handleClick (event) {
+    event.preventDefault()
+    this.state.input.filter(x => x === '').length ? this.setState({modal: true}) : this.setState({ completed: true, modal: true});
+    this.setState({modal: true});
+    this.state.completed && this.getFriend();  
+  }
+
+  toggleModal () {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  getFriend(){
+    axios.post('/user', {
+      ...this.state.input
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+
+  render () {
+    const {name, photo, ...qs} = this.state.input;
+    const { completed, modal } = this.state;
     return (
       <form onSubmit={this.onSubmit} className="mw9 pa3 bg-washed-green">
         <div className="flex justify-between">
@@ -42,7 +77,18 @@ class Form extends Component {
           </div>
         </div>
         <div>{questions.map((q, i) => <Question q={q} i={i} onChange={event => this.setState(byPropKey(`q${i}`, event.target.value))} />)}</div>
-        <button id="submit" class="ba b--black bg-white black grow ma2 pa2" type="submit">Submit Your Results!</button>
+        <button
+         onClick={this.handleClick}
+         id="submit" 
+         class="ba b--black bg-white black grow ma2 pa2" 
+         type="submit"
+         >
+           Submit Your Results!
+         </button>
+         <Modal
+          onClose={this.toggleModal}
+          show={this.state.modal}
+         />
       </form>
     )
   }
@@ -86,3 +132,9 @@ const Question = ({q, i, onChange}) => (
 );
 
 export default Form;
+
+//user clicks on button
+//button validates that the form is complete
+//a modal pops up
+//if form is complete it posts user data to server and renders response
+//else it notifies user to complete filling out the data

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Link } from 'react-router-dom';
-import * as routes from '../constants/routes';
 
 const Home = () =>
  <header className="bg-gold sans-serif">
@@ -12,7 +11,7 @@ const Home = () =>
         </span>
       </h3>
       <h4 class="f3 fw1 georgia i">Take a quick test to see how similar you are to other dudes.</h4>
-      <a class="f3 grow no-underline br-pill pa3 mb2 dib white bg-purple center" href="survey">Take Survey!</a>
+      <Link class="f3 grow no-underline br-pill pa3 mb2 dib white bg-purple center" to="/survey">Take Survey!</Link>
     </div>
   </header>
 
