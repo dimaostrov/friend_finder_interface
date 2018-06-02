@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Modal extends React.Component {
+class Modal extends Component {
   render() {
     // Render nothing if the "show" prop is false
     if(!this.props.show) {
