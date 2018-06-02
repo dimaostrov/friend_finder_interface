@@ -5,7 +5,7 @@ const Question = ({q, i, onChange}) => (
     <div className="f3">On a scale of 1 to 5 how do you feel about {q}</div>
     <div className="flex justify-between mt3">
       <div>
-        <input type="radio" name={`q${i}`} value="1" onChange={onChange} />1
+        <input type="radio" name={`q${i}`} value="1" onChange={onChange} defaultChecked />1
       </div>
       <div>
         <input type="radio" name={`q${i}`} value="2" onChange={onChange} />2

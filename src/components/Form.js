@@ -38,7 +38,8 @@ class Form extends Component {
 
   handleClick (event) {
     event.preventDefault()
-    this.state.input.filter(x => x === '').length ? this.setState({modal: true}) : this.setState({ completed: true, modal: true});
+    console.log(Object.values(this.state.input))
+    Object.values(this.state.input).filter(x => x !== '').length ? this.setState({ completed: true, modal: true}) : this.setState({ modal: true});
     this.setState({modal: true});
     this.state.completed && this.getFriend();  
   }
@@ -50,8 +51,9 @@ class Form extends Component {
   }
 
   getFriend(){
-    axios.post('/user', {
-      ...this.state.input
+    const user = this.state.input
+    axios.post('localhost:3000/api/friends', {
+      user
     })
     .then(function (response) {
       console.log(response);
